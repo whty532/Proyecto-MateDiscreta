@@ -1,0 +1,2 @@
+# Este proyecto solo usa la biblioteca estándar de Python (tkinter incluido).
+# No hay librerías externas que instalar.

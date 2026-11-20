@@ -1,11 +1,4 @@
-"""Cifrado RSA - interfaz gráfica del Proyecto 3 de MM2015 Matemática Discreta 1.
-
-Ejecutar con:  python main.py
-
-La interfaz solo lee los datos, llama a rsa_logic.py y muestra los resultados.
-Toda la matemática (primalidad, MCD, inverso y exponenciación modular) está en
-rsa_logic.py. Se usa solo la biblioteca estándar de Python (Tkinter).
-"""
+"""Cifrado RSA - interfaz gráfica del Proyecto 3 de MM2015 Matemática Discreta 1"""
 
 import tkinter as tk
 from tkinter import font as tkfont
@@ -76,12 +69,11 @@ def etiqueta_fila(numero, es_relleno=False):
     return ("alterna",) if numero % 2 == 1 else ()
 
 
-# ---------------------------------------------------------------------------
+
 # Piezas reutilizables de la interfaz
-# ---------------------------------------------------------------------------
 
 class PanelValores(ttk.Frame):
-    """Lista de valores calculados: nombre a la izquierda y valor a la derecha."""
+    """Lista de valores calculados: nombre a la izquierda y valor a la derecha"""
 
     def __init__(self, padre, filas):
         super().__init__(padre)
@@ -133,8 +125,7 @@ def crear_tabla(padre, titulo, columnas):
     contenedor = ttk.Frame(marco)
     contenedor.pack(fill="both", expand=True)
 
-    tabla = ttk.Treeview(contenedor, columns=[c[0] for c in columnas], show="headings",
-                         selectmode="none", height=6)
+    tabla = ttk.Treeview(contenedor, columns=[c[0] for c in columnas], show="headings", selectmode="none", height=6)
     for clave, encabezado, ancho in columnas:
         tabla.heading(clave, text=encabezado)
         tabla.column(clave, width=ancho, minwidth=40, anchor="center", stretch=True)
@@ -186,9 +177,7 @@ def armar_pestana(pestana):
     return datos, valores, resultado, proceso
 
 
-# ---------------------------------------------------------------------------
 # Pestaña Encriptar
-# ---------------------------------------------------------------------------
 
 class PestanaEncriptar(ttk.Frame):
 
@@ -240,11 +229,9 @@ class PestanaEncriptar(ttk.Frame):
         self.caja_c.grid(row=0, column=1, columnspan=3, sticky="ew", pady=3)
 
         ttk.Label(resultado, text="Longitud L:").grid(row=1, column=0, sticky="w", pady=3, padx=(0, 10))
-        ttk.Entry(resultado, textvariable=self.longitud, width=8, state="readonly",
-                  font=(self.app.fuente_numeros, 11)).grid(row=1, column=1, sticky="w", pady=3)
+        ttk.Entry(resultado, textvariable=self.longitud, width=8, state="readonly", font=(self.app.fuente_numeros, 11)).grid(row=1, column=1, sticky="w", pady=3)
         ttk.Button(resultado, text="Copiar C", command=self.copiar_c).grid(row=1, column=2, sticky="e", padx=6)
-        ttk.Button(resultado, text="Pasar a Desencriptar",
-                   command=self.pasar_a_desencriptar).grid(row=1, column=3, sticky="e")
+        ttk.Button(resultado, text="Pasar a Desencriptar", command=self.pasar_a_desencriptar).grid(row=1, column=3, sticky="e")
 
     def _crear_proceso(self, proceso):
         marco, self.tabla_ascii = crear_tabla(proceso, "Caracteres y código ASCII", [
@@ -256,7 +243,8 @@ class PestanaEncriptar(ttk.Frame):
         ])
         marco.grid(row=0, column=1, sticky="nsew")
 
-    # --- acciones -----------------------------------------------------------
+
+    # acciones 
 
     def _contar_caracteres(self, *_):
         L = len(self.mensaje.get())
@@ -341,9 +329,7 @@ class PestanaEncriptar(ttk.Frame):
         self.app.mostrar_estado("Datos de Encriptar borrados.")
 
 
-# ---------------------------------------------------------------------------
 # Pestaña Desencriptar
-# ---------------------------------------------------------------------------
 
 class PestanaDesencriptar(ttk.Frame):
 
@@ -374,8 +360,7 @@ class PestanaDesencriptar(ttk.Frame):
         self.entrada_c = crear_caja_texto(datos, self.app, 3, solo_lectura=False)
         self.entrada_c.configure(font=(self.app.fuente_numeros, 11))
         self.entrada_c.grid(row=0, column=1, sticky="ew", pady=3)
-        ttk.Label(datos, text="Bloques de 6 dígitos",
-                  style="Pista.TLabel").grid(row=1, column=1, sticky="w", pady=(0, 4))
+        ttk.Label(datos, text="Bloques de 6 dígitos", style="Pista.TLabel").grid(row=1, column=1, sticky="w", pady=(0, 4))
         crear_campo(datos, 2, "Longitud L:", self.L, self.desencriptar)
         crear_campo(datos, 3, "Primo p:", self.p, self.desencriptar)
         crear_campo(datos, 4, "Primo q:", self.q, self.desencriptar)

@@ -1,33 +1,17 @@
-"""Lógica del sistema criptográfico RSA - Proyecto 3, MM2015 Matemática Discreta 1.
-
-Los cuatro algoritmos siguen los apuntes del módulo 3:
-
-    es_primo          División de prueba hasta la raíz de n (pág. 3).
-    mcd               Algoritmo de Euclides (pág. 9).
-    inverso_modular   Euclides + lema de Bézout con matrices Q (págs. 16-19).
-    exp_modular       Exponenciación modular recursiva, mpower2 (pág. 27).
-
-No se usa math.gcd, pow(b, e, n), pow(e, -1, phi) ni librerías de criptografía.
-Si un dato no es válido, las funciones lanzan ValueError con un mensaje claro.
-"""
+"""Lógica del sistema criptográfico RSA - Proyecto 3, MM2015 Matemática Discreta 1 """
 
 ASCII_MIN = 32          # espacio
 ASCII_MAX = 126         # ~
-N_MIN = 126126          # n debe ser mayor: el bloque más grande posible es "~~" = 126126
-N_MAX = 1000000         # n debe ser menor: así cada bloque cifrado cabe en 6 dígitos
+N_MIN = 126126          # n debe ser mayor, el bloque más grande posible es 126126
+N_MAX = 1000000         # n debe ser menor, así cada bloque cifrado cabe en 6 dígitos
 DIGITOS_BLOQUE = 6
 DIGITOS = "0123456789"
 
 
-# ---------------------------------------------------------------------------
-# 1. Algoritmos vistos en clase
-# ---------------------------------------------------------------------------
-
 def es_primo(n):
-    """Indica si n es primo usando división de prueba (apuntes, pág. 3).
+    """Indica si n es primo usando división de prueba
 
-    Si ningún número entre 2 y la raíz de n lo divide, n es primo.
-    La condición i * i <= n evita calcular la raíz.
+    Si ningún número entre 2 y la raíz de n lo divide, n es primo
     """
     if n < 2:
         return False
@@ -40,7 +24,7 @@ def es_primo(n):
 
 
 def mcd(a, b):
-    """Máximo común divisor con el algoritmo de Euclides (apuntes, pág. 9).
+    """Máximo común divisor con el algoritmo de Euclides
 
     Se escribe a = q*b + r y se cambia (a, b) por (b, r) hasta que el
     residuo sea 0. El último divisor distinto de 0 es el MCD.
@@ -53,7 +37,7 @@ def mcd(a, b):
 
 
 def multiplicar_matrices(A, B):
-    """Producto de dos matrices de 2x2."""
+    """Producto de dos matrices de 2x2"""
     return [
         [A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]],
         [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]],
@@ -61,21 +45,18 @@ def multiplicar_matrices(A, B):
 
 
 def inverso_modular(a, m):
-    """Inverso de a módulo m con Euclides y Bézout en forma matricial (págs. 16-19).
+    """Inverso de a módulo m con Euclides y Bézout en forma matricial.
 
-    1. Euclides: m = q0*a + r1, a = q1*r1 + r2, ... Se guarda el cociente de
-       cada división cuyo residuo no es 0.
-    2. Con cada cociente se forma Q = [[q, 1], [1, 0]] y se calcula
-       M = Q0 * Q1 * ... * Qk. Así queda [m, a] = M [r, MCD].
-    3. La inversa de M es [[d, -b], [-c, a]] / det(M). Su segunda fila da la
-       ecuación de Bézout: MCD = x*m + y*a. Si MCD = 1, y es el inverso de a.
+    1. Euclides: m = q0*a + r1, a = q1*r1 + r2, ... Se guarda el cociente de cada división cuyo residuo no es 0
+    2. Con cada cociente se forma Q = [[q, 1], [1, 0]] y se calcula M = Q0 * Q1 * ... * Qk. Así queda [m, a] = M [r, MCD].
+    3. La inversa de M es [[d, -b], [-c, a]] / det(M). Su segunda fila da la ecuación de Bézout: MCD = x*m + y*a. Si MCD = 1, y es el inverso de a.
 
-    Devuelve el representante d que cumple 1 <= d < m.
+    Devuelve el representante d que cumple 1 <= d < m
     """
     if m < 2 or a < 1:
         raise ValueError(f"No se puede calcular el inverso de {a} módulo {m}.")
 
-    # Paso 1: Euclides, guardando los cocientes
+    #  Euclides guardando los cocientes
     cocientes = []
     dividendo, divisor = m, a
     while dividendo % divisor != 0:
@@ -85,19 +66,19 @@ def inverso_modular(a, m):
     if divisor != 1:
         raise ValueError(f"{a} no tiene inverso módulo {m}, porque MCD({a}, {m}) = {divisor}.")
 
-    # Paso 2: M = Q0 * Q1 * ... * Qk
+    # M = Q0 * Q1 * ... * Qk
     M = [[1, 0], [0, 1]]
     for q in cocientes:
         M = multiplicar_matrices(M, [[q, 1], [1, 0]])
 
-    # Paso 3: segunda fila de la inversa de M. det(M) es 1 o -1, la división es exacta.
+    # segunda fila de la inversa de M. det(M) es 1 o -1, la división es exacta.
     det = M[0][0] * M[1][1] - M[0][1] * M[1][0]
     y = M[0][0] // det
     return y % m
 
 
 def exp_modular(base, exponente, modulo):
-    """Calcula base^exponente mod modulo con el algoritmo mpower2 (pág. 27).
+    """Calcula base^exponente mod modulo con el algoritmo mpower2 
 
     - Si el exponente es 0, el resultado es 1.
     - Si es par:   (base^(exponente/2))^2 mod m
@@ -114,12 +95,11 @@ def exp_modular(base, exponente, modulo):
     return (base * cuadrado) % modulo
 
 
-# ---------------------------------------------------------------------------
-# 2. Validaciones
-# ---------------------------------------------------------------------------
+
+# Validaciones
 
 def nombre_caracter(caracter):
-    """Texto legible para un carácter, útil en mensajes y tablas."""
+    """Texto legible para un carácter"""
     especiales = {" ": "espacio", "\n": "salto de línea", "\t": "tabulación", "\r": "retorno de carro"}
     return especiales.get(caracter, caracter)
 
@@ -136,17 +116,17 @@ def convertir_entero(valor, nombre):
 
 
 def validar_parametros(p, q, e):
-    """Revisa p, q y e. Devuelve (p, q, e, n, phi) ya como enteros."""
+    """Revisa p, q y e. Devuelve (p, q, e, n, phi) ya como enteros"""
     p = convertir_entero(p, "p")
     q = convertir_entero(q, "q")
     e = convertir_entero(e, "e")
 
     if not es_primo(p):
-        raise ValueError(f"p = {p} no es primo.")
+        raise ValueError(f"p = {p} no es primo")
     if not es_primo(q):
-        raise ValueError(f"q = {q} no es primo.")
+        raise ValueError(f"q = {q} no es primo")
     if p == q:
-        raise ValueError("p y q deben ser primos distintos.")
+        raise ValueError("p y q deben ser primos distintos")
 
     n = p * q
     if not N_MIN < n < N_MAX:
@@ -165,7 +145,7 @@ def validar_parametros(p, q, e):
 
 
 def validar_mensaje(mensaje):
-    """Cada carácter debe tener código ASCII entre 32 y 126. No se cambia nada."""
+    """Cada carácter debe tener código ASCII entre 32 y 126"""
     if mensaje == "":
         raise ValueError("Escriba un mensaje para encriptar.")
     for posicion, caracter in enumerate(mensaje, start=1):
@@ -202,9 +182,7 @@ def leer_cifrado(cifrado, n):
     return bloques
 
 
-# ---------------------------------------------------------------------------
-# 3. Conversión entre texto y bloques
-# ---------------------------------------------------------------------------
+# Conversión entre texto y bloques
 
 def pareja_a_bloque(pareja):
     """'AB' -> '065' + '066' -> 65066."""
@@ -224,9 +202,8 @@ def bloque_a_pareja(m, numero_bloque):
     return chr(codigos[0]) + chr(codigos[1])
 
 
-# ---------------------------------------------------------------------------
-# 4. Encriptar y desencriptar
-# ---------------------------------------------------------------------------
+
+# Encriptar y desencriptar
 
 def encriptar(mensaje, p, q, e):
     """Encripta el mensaje M con la llave pública (e, n).

@@ -1,10 +1,4 @@
-"""Comprobaciones del proyecto RSA.
-
-Ejecutar con:  python pruebas.py
-
-Revisa los algoritmos con ejemplos de los apuntes, el ejemplo de referencia del
-enunciado, la recuperación de distintos mensajes y el rechazo de datos inválidos.
-"""
+"""Comprobaciones del proyecto RSA"""
 
 import unittest
 

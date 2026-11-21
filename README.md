@@ -3,7 +3,7 @@
 Programa con interfaz gráfica para encriptar y desencriptar mensajes con RSA.
 Proyecto 3 de MM2015 Matemática Discreta 1, Universidad del Valle de Guatemala.
 
-## Integrantes - Grupo 2
+## Integrantes - Grupo 16
 
 - Estuardo Sebastián García de León
 - Gabriel Zambrano
@@ -98,4 +98,4 @@ Están en `rsa_logic.py` y siguen los métodos vistos en clase. No se usa `math.
 
 ## Video
 
-
+https://youtu.be/qLdRCdOvgzo 

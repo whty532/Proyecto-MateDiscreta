@@ -34,12 +34,12 @@ AYUDA = (
 
 ACERCA_DE = (
     "Cifrado RSA\n"
-    "Proyecto 3 - MM2015 Matemática Discreta 1\n"
+    "Proyecto 3 - Matemática Discreta 1\n"
     "Universidad del Valle de Guatemala\n\n"
-    "Grupo 2:\n"
+    "Grupo 16:\n"
     "Estuardo Sebastián García de León\n"
     "Gabriel Zambrano\n\n"
-    "Hecho en Python con Tkinter."
+    "Hecho en Python con Tkinter"
 )
 
 
